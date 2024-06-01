@@ -10,7 +10,7 @@ void setup() {
   //Serial.println("Role: Receiver");
 
   //setup LoRa transceiver module
-  LoRa.setPins(ss, rst, dio0);
+  LoRa.setPins(ss, rst, dio0); //default setting in LoRa library -> ss: 10, rst: 9, dio0: 2
 
   while (!LoRa.begin(433E6)) { // or 915E6, the MHz speed of yout module
     // Serial.println("Starting LoRa failed!..");
