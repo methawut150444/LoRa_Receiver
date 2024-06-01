@@ -1,48 +1,14 @@
 #include <LoRa.h>
-#include <PCF8574.h>
 
-PCF8574 PCF(0x20);
-
-//define the pins used by the transceiver module
-#define ss D0    //D0
-#define rst D1   //D1
-#define dio0 D2  //D2
-
-String LoRaData;
+//custom pin to connect to LoRa module
+//#define ss D0    //D0
+//#define rst D1   //D1
+//#define dio0 D2  //D2
 
 void setup() {
-  Serial.begin(9600);
-  Serial.println("Role: Receiver");
+  //Serial.begin(9600);
+  //Serial.println("Role: Receiver");
 
-  LoRa_setup();
-  PCF8574_setup();
-
-  //if init succeeded!
-  PCF.digitalWrite(P4, LOW);
-  PCF.digitalWrite(P5, LOW);
-}
-
-void loop() {
-  // try to parse packet
-  int packetSize = LoRa.parsePacket();
-  if (packetSize) {
-    // // received a packet
-    Serial.print("Received packet '");
-
-    // read packet
-    while (LoRa.available()) {
-      LoRaData = LoRa.readString();
-      Serial.println(LoRaData + " || RSSI: " + LoRa.packetRssi()); 
-    }
-    
-    // print RSSI of packet
-    // Serial.print(" -> with RSSI ");
-    // Serial.println(LoRa.packetRssi());
-
-  }
-}
-
-void LoRa_setup(){
   //setup LoRa transceiver module
   LoRa.setPins(ss, rst, dio0);
 
@@ -61,20 +27,18 @@ void LoRa_setup(){
   // Serial.println("LoRa init succeeded!");
 }
 
-void PCF8574_setup(){
-  //Active LOW (Pull down)
+void loop() {
+  // try to parse packet
+  int packetSize = LoRa.parsePacket();
+  if (packetSize) {
+    // // received a packet
+    Serial.print("Received packet '");
 
-  // PCF.pinMode(P0, OUTPUT);
-  // PCF.pinMode(P1, OUTPUT);
-  // PCF.pinMode(P2, OUTPUT);
-  // PCF.pinMode(P3, OUTPUT);
-  PCF.pinMode(P4, OUTPUT);
-  PCF.pinMode(P5, OUTPUT);
-  // PCF.pinMode(P6, OUTPUT);
-  // PCF.pinMode(P7, OUTPUT);
-
-  PCF.begin();
+    // read packet
+    while (LoRa.available()) {
+      LoRaData = LoRa.readString();
+      Serial.println(LoRaData + " || RSSI: " + LoRa.packetRssi()); 
+    }
+    
+  }
 }
-
-
-
